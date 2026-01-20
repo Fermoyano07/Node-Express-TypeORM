@@ -1,22 +1,19 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import estudiantesRoutes from './routes/estudiantesRouters';
-import profesoresRoutes from './routes/profesoresRouters';
-import cursosRoutes from './routes/cursosRouters';
+import app from './app';
+import { AppDataSource } from './db/conexion';
 
-const app = express();
+async function main() {
+    try {
+        await AppDataSource.initialize();
+        console.log("Base de datos conectada");
 
-app.use(morgan('dev'));
-app.use(cors());
-app.get ('/', (req, res) => {
-    res.send('Hola Mundo');
-});
+        app.listen(6505, () => {
+            console.log("Server activo");
+        });
+    } catch (err) {
+        if (err instanceof Error) {
+            console.log(err.message);
+        }
+    }
+}
 
-app.use('/estudiantes', estudiantesRoutes);
-app.use('/profesores', profesoresRoutes);
-app.use('/cursos', cursosRoutes);
-
-app.listen(6505, () => {
-    console.log("Server activo");
-});
+main();
