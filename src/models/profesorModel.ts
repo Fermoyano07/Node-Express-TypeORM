@@ -1,35 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, BaseEntity } from "typeorm";
 import { Curso } from "./cursoModel";
 
 @Entity('profesores')
-export class Profesor {
+export class Profesor extends BaseEntity {
 
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  dni: string;
+  dni!: string;
 
   @Column()
-  nombre: string;
+  nombre!: string;
 
   @Column()
-  apellido: string;
+  apellido!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column()
-  profesion: string;
+  profesion!: string;
 
   @Column()
-  telefono: string;
+  telefono!: string;
 
   @CreateDateColumn()
-  cratedAt: Date;
+  cratedAt!: Date;
 
   @UpdateDateColumn()
-  updateAt: Date;
+  updateAt!: Date;
 
   @OneToMany( () => Curso, (curso) => curso.profesor)
   cursos: Curso[];

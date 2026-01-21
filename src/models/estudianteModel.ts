@@ -1,26 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from "typeorm";
 
 @Entity('estudiantes')
-export class Estudiante {
+export class Estudiante extends BaseEntity{
 
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  dni: string;
+  dni!: string;
 
   @Column()
-  nombre: string;
+  nombre!: string;
 
   @Column()
-  apellido: string;
+  apellido!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @CreateDateColumn()
-  cratedAt: Date;
+  cratedAt!: Date;
 
   @UpdateDateColumn()
-  updateAt: Date;
+  updateAt!: Date;
 }

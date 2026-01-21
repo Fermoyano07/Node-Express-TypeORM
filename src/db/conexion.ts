@@ -14,5 +14,5 @@ export const AppDataSource = new DataSource({
     entities: [Estudiante, Profesor, Curso],
     subscribers: [],
     migrations: [],
-    synchronize: true
+    synchronize: false
 });

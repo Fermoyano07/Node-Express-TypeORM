@@ -1,11 +1,17 @@
 import { Request, Response } from "express";
+import { Profesor} from "../models/profesorModel";
 
-class ProfesoresController {
+class profesorsController {
+
+    constructor () {
+
+    }
 
     // GET /profesores
-    consultar(req: Request, res: Response) {
+    async consultar(req: Request, res: Response) {
         try {
-            res.send("consultar profesores");
+            const data = await Profesor.find();
+            res.status(200).json(data);
         } catch (err) {
             if (err instanceof Error)
                 res.status(500).send(err.message);
@@ -13,11 +19,14 @@ class ProfesoresController {
     }
 
     // GET /profesores/:id
-    consultarDetalle(req: Request, res: Response) {
+    async consultarDetalle(req: Request, res: Response) {
         const { id } = req.params;
-
         try {
-            res.send("consultar detalle");
+            const registro = await Profesor.findOneBy({ id: Number(id) });
+            if(!registro) {
+                throw new Error('profesor no encontrado');
+            }
+            res.status(200).json(registro);
         } catch (err) {
             if (err instanceof Error)
                 res.status(500).send(err.message);
@@ -25,11 +34,10 @@ class ProfesoresController {
     }
 
     // POST /profesores
-    ingresar(req: Request, res: Response) {
-        const { dni, nombre, apellido, email } = req.body;
-
+    async ingresar(req: Request, res: Response) {
         try {
-            res.send("ingresar");
+            const registro = await Profesor.save(req.body);
+            res.status(201).json(registro);
         } catch (err) {
             if (err instanceof Error)
                 res.status(500).send(err.message);
@@ -37,12 +45,20 @@ class ProfesoresController {
     }
 
     // PUT /profesores/:id
-    actualizar(req: Request, res: Response) {
+    async actualizar(req: Request, res: Response) {
         const { id } = req.params;
-        const { dni, nombre, apellido, email } = req.body;
-
+        
         try {
-            res.send("actualizar");
+            const registro = await Profesor.findOneBy({ id: Number(id) });
+            
+            if(!registro) {
+                throw new Error('profesor no encontrado');
+            }
+
+            await Profesor.update({ id:Number(id) }, req.body); 
+            const registroActualizado = await Profesor.findOneBy({ id: Number(id) });
+            res.status(200).json(registroActualizado);
+
         } catch (err) {
             if (err instanceof Error)
                 res.status(500).send(err.message);
@@ -50,10 +66,16 @@ class ProfesoresController {
     }
 
     // DELETE /profesores/:id
-    borrar(req: Request, res: Response) {
+    async borrar(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            res.send("borrar");
+            const registro = await Profesor.findOneBy({ id: Number(id) });
+            if(!registro) {
+                throw new Error('profesor no encontrado');
+            }
+            await Profesor.delete({ id:Number(id) }); 
+            res.status(204);
+
         } catch (err) {
             if (err instanceof Error)
                 res.status(500).send(err.message);
@@ -61,4 +83,4 @@ class ProfesoresController {
     }
 }
 
-export default new ProfesoresController();
+export default new profesorsController();
